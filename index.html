@@ -3,10 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>Team Merengue — Equipo de Robótica</title>
 
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="Style.css">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -579,16 +578,20 @@
             <p style="margin-left:auto;margin-right:auto;">Ayúdanos a seguir inspirando a las demás generaciones.</p>
         </div>
 
-        <form id="sponsorForm" class="reveal" novalidate>
+        <form id="sponsorForm" class="reveal" action="https://api.web3forms.com/submit" method="POST" novalidate>
+
+            <!-- Web3Forms -->
+            <input type="hidden" name="access_key" value="2a3180ba-1748-4878-b2bc-6585d93ec0a7">
+            <input type="hidden" name="subject" value="Nueva solicitud de patrocinio / donación - Team Merengue">
+            <input type="hidden" name="from_name" value="Web Team Merengue - Patrocinios">
+            <input type="checkbox" name="botcheck" style="display:none" tabindex="-1" autocomplete="off">
 
             <div class="field-row">
                 <div class="field" id="f-nombre">
                     <label for="s-nombre">Nombre completo <span class="req">*</span></label>
-                    <input type="text" id="s-nombre" name="nombre" placeholder="Ej. Juan Pérez">
+                    <input type="text" id="s-nombre" name="name" placeholder="Ej. Juan Pérez">
                     <div class="error-msg">Por favor escribe tu nombre.</div>
                 </div>
-
-                <input type="text" name="_honey" style="display:none" tabindex="-1" autocomplete="off">
 
 
                 <div class="field" id="f-empresa">
@@ -600,7 +603,7 @@
             <div class="field-row">
                 <div class="field" id="f-correo">
                     <label for="s-correo">Correo electrónico <span class="req">*</span></label>
-                    <input type="email" id="s-correo" name="correo" placeholder="tucorreo@ejemplo.com">
+                    <input type="email" id="s-correo" name="email" placeholder="tucorreo@ejemplo.com">
                     <div class="error-msg">Ingresa un correo válido.</div>
                 </div>
 
@@ -622,7 +625,7 @@
 
             <div class="field">
                 <label for="s-mensaje">Mensaje</label>
-                <textarea id="s-mensaje" name="mensaje" maxlength="500" placeholder="Cuéntanos cómo te gustaría apoyar a Team Merengue"></textarea>
+                <textarea id="s-mensaje" name="message" maxlength="500" placeholder="Cuéntanos cómo te gustaría apoyar a Team Merengue"></textarea>
             </div>
 
             <button type="submit" class="btn btn-primary submit-btn">Enviar solicitud</button>
@@ -655,8 +658,6 @@
                                 <path d="M12 7v5l3 3"/>
                             </svg>
                         </div>
-                        
-                           <input type="text" name="_honey" style="display:none" tabindex="-1" autocomplete="off">
 
                         <div>
                             <h3>Sede de entrenamiento</h3>
@@ -694,23 +695,29 @@
                 </div>
             </div>
 
-            <form id="contactForm" class="reveal" novalidate>
+            <form id="contactForm" class="reveal" action="https://api.web3forms.com/submit" method="POST" novalidate>
+
+            <!-- Web3Forms -->
+            <input type="hidden" name="access_key" value="2a3180ba-1748-4878-b2bc-6585d93ec0a7">
+            <input type="hidden" name="subject" value="Nuevo mensaje de contacto - Team Merengue">
+            <input type="hidden" name="from_name" value="Web Team Merengue - Contacto">
+            <input type="checkbox" name="botcheck" style="display:none" tabindex="-1" autocomplete="off">
 
                 <div class="field" id="c-nombre">
                     <label for="c-name">Nombre <span class="req">*</span></label>
-                    <input type="text" id="c-name" name="nombre" placeholder="Tu nombre">
+                    <input type="text" id="c-name" name="name" placeholder="Tu nombre">
                     <div class="error-msg">Por favor escribe tu nombre.</div>
                 </div>
 
                 <div class="field" id="c-correo">
                     <label for="c-mail">Correo electrónico <span class="req">*</span></label>
-                    <input type="email" id="c-mail" name="correo" placeholder="tucorreo@ejemplo.com">
+                    <input type="email" id="c-mail" name="email" placeholder="tucorreo@ejemplo.com">
                     <div class="error-msg">Ingresa un correo válido.</div>
                 </div>
 
                 <div class="field" id="c-mensaje">
                     <label for="c-msg">Mensaje <span class="req">*</span></label>
-                    <textarea id="c-msg" name="mensaje" maxlength="500" placeholder="¿En qué podemos ayudarte?"></textarea>
+                    <textarea id="c-msg" name="message" maxlength="500" placeholder="¿En qué podemos ayudarte?"></textarea>
                     <div class="error-msg">Escribe tu mensaje.</div>
                 </div>
 
