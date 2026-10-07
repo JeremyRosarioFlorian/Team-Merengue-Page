@@ -283,23 +283,37 @@
     el.textContent = text;
   }
 
-  // Envía el formulario al backend de Laravel
-  function sendForm(form, url) {
-    const token = document.querySelector('meta[name="csrf-token"]');
+  // Envía el formulario a Web3Forms
+  const WEB3FORMS_URL = 'https://api.web3forms.com/submit';
 
-    return fetch(url, {
+  function sendForm(form) {
+    const data = new FormData(form);
+
+    // Si el bot marcó el campo trampa, no se envía
+    if (data.get('botcheck')) return Promise.reject(new Error('Envío bloqueado.'));
+
+    return fetch(WEB3FORMS_URL, {
       method: 'POST',
-      body: new FormData(form),
-      headers: {
-        Accept: 'application/json',
-        'X-CSRF-TOKEN': token ? token.content : ''
-      }
-    }).then((response) => {
-      if (response.ok) return response.json().catch(() => ({}));
-      if (response.status === 429) throw new Error('Has enviado demasiados mensajes. Espera un minuto e inténtalo de nuevo.');
-      if (response.status === 422) throw new Error('Revisa los datos del formulario.');
-      throw new Error('No pudimos enviar el mensaje. Inténtalo nuevamente.');
-    });
+      headers: { Accept: 'application/json' },
+      body: data
+    })
+      .then((response) =>
+        response.json().then(
+          (json) => ({ ok: response.ok, status: response.status, json }),
+          () => ({ ok: response.ok, status: response.status, json: {} })
+        )
+      )
+      .then(({ ok, status, json }) => {
+        if (ok && json.success) return json;
+        if (status === 429) throw new Error('Has enviado demasiados mensajes. Espera un minuto e inténtalo de nuevo.');
+        if (status === 400 || status === 422) throw new Error('Revisa los datos del formulario.');
+        throw new Error('No pudimos enviar el mensaje. Inténtalo nuevamente.');
+      })
+      .catch((err) => {
+        // Error de red (sin internet, bloqueado, etc.)
+        if (err instanceof TypeError) throw new Error('No hay conexión. Revisa tu internet e inténtalo de nuevo.');
+        throw err;
+      });
   }
 
   // =========================================
@@ -396,7 +410,10 @@
       const correoVal = correo.value.trim();
       const tipoVal = tipo.value.toLowerCase();
 
-      sendForm(sponsorForm, '/patrocinio')
+      const btn = sponsorForm.querySelector('.submit-btn');
+      if (btn) { btn.disabled = true; btn.textContent = 'Enviando...'; }
+
+      sendForm(sponsorForm)
         .then(() => {
           showStatus(
             status,
@@ -407,7 +424,8 @@
           sponsorForm.reset();
           pills().forEach((p) => p.classList.remove('checked'));
         })
-        .catch((err) => showStatus(status, 'bad', err.message));
+        .catch((err) => showStatus(status, 'bad', err.message))
+        .finally(() => { if (btn) { btn.disabled = false; btn.textContent = 'Enviar solicitud'; } });
     });
   }
 
@@ -440,12 +458,16 @@
 
       const correoVal = correo.value.trim();
 
-      sendForm(contactForm, '/contacto')
+      const btn = contactForm.querySelector('.submit-btn');
+      if (btn) { btn.disabled = true; btn.textContent = 'Enviando...'; }
+
+      sendForm(contactForm)
         .then(() => {
           showStatus(status, 'ok', '¡Mensaje enviado! Te responderemos pronto a ' + correoVal + '.');
           contactForm.reset();
         })
-        .catch((err) => showStatus(status, 'bad', err.message));
+        .catch((err) => showStatus(status, 'bad', err.message))
+        .finally(() => { if (btn) { btn.disabled = false; btn.textContent = 'Enviar mensaje'; } });
     });
   }
 
