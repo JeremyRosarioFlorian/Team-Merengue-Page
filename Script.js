@@ -46,6 +46,57 @@
     document.querySelectorAll('section[id]').forEach((s) => activeObserver.observe(s));
   }
 
+
+  
+
+
+  // =========================================
+  // SELECTOR DE IDIOMAS
+  // =========================================
+
+  // Hacer que las funciones estén disponibles para el HTML
+  window.toggleLanguages = function (button) {
+    const menu = button.closest(".language-menu");
+    if (!menu) return;
+
+    const isOpen = menu.classList.toggle("open");
+    button.setAttribute("aria-expanded", String(isOpen));
+  };
+
+  window.changeLanguage = function (language) {
+    const supportedLanguages = [
+      "pt", "fr", "tr", "es", "en", "zh-CN", "ar"
+    ];
+
+    if (!supportedLanguages.includes(language)) return;
+
+    const url =
+      "https://translate.google.com/translate?sl=auto&tl=" +
+      encodeURIComponent(language) +
+      "&u=" +
+      encodeURIComponent(window.location.href);
+
+    window.location.href = url;
+  };
+
+
+  
+
+document.addEventListener("click", function (event) {
+    document.querySelectorAll(".language-menu.open").forEach(menu => {
+        if (!menu.contains(event.target)) {
+            menu.classList.remove("open");
+
+            const button = menu.querySelector(".language-button");
+            if (button) {
+                button.setAttribute("aria-expanded", "false");
+            }
+        }
+    });
+});
+
+
+
   // =========================================
   // ANIMACIÓN DE ELEMENTOS AL BAJAR
   // =========================================
