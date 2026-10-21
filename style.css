@@ -138,6 +138,7 @@ header .brand-logo {
 nav.links {
     display: flex;
     gap: 2px;
+    margin-right: 38px;
     align-items: center;
 }
 
@@ -165,6 +166,7 @@ nav.links > .nav-cta:hover {
     background: var(--blue-dark);
     color: #fff;
 }
+
 
 /* Submenús (Nosotros, Contacto) */
 
@@ -232,6 +234,124 @@ details.has-sub[open] summary svg { transform: rotate(180deg); }
     align-items: center;
     justify-content: center;
 }
+
+
+/* SELECTOR DE IDIOMAS */
+
+/* MENU DESPLEGABLE DE IDIOMAS */
+/* SELECTOR DE IDIOMAS */
+.language-menu {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    flex-shrink: 0;
+    z-index: 99999;
+}
+
+/* Botón sin borde ni fondo blanco */
+.language-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    min-height: 42px;
+    padding: 8px 12px;
+    border: none;
+    outline: none;
+    border-radius: 10px;
+    background: transparent;
+    color: #14161B;
+    font: inherit;
+    cursor: pointer;
+    transition: color .2s ease, background .2s ease;
+}
+
+/* Al pasar el cursor: negro */
+.language-button:hover {
+    color: #000;
+    background: transparent;
+}
+
+/* Al hacer clic o seleccionar: azul */
+.language-button:active,
+.language-button[aria-expanded="true"] {
+    color: #1855D6;
+    background: transparent;
+}
+
+/* Icono del globo */
+.language-icon {
+    display: inline-block;
+    font-size: 20px;
+    line-height: 1;
+    filter: grayscale(1) brightness(0) invert(1);
+    transition: filter .2s ease;
+}
+
+/* Al pasar el cursor: globo negro */
+.language-button:hover .language-icon {
+    filter: grayscale(1) brightness(0);
+}
+
+/* Al abrir o seleccionar: globo azul */
+.language-button:active .language-icon,
+.language-button[aria-expanded="true"] .language-icon {
+    filter: grayscale(1) brightness(0) saturate(100%)
+            invert(24%) sepia(93%) saturate(2046%)
+            hue-rotate(211deg) brightness(94%) contrast(98%);
+}
+
+/* Flecha */
+.language-arrow {
+    display: inline-block;
+    font-size: 15px;
+    transition: transform .2s ease;
+}
+
+.language-menu.open .language-arrow {
+    transform: rotate(180deg);
+}
+
+/* Menú desplegable */
+.language-dropdown {
+    display: none;
+    position: absolute;
+    top: calc(100% + 8px);
+    right: 0;
+    width: 230px;
+    padding: 8px;
+    background: #fff;
+    border: 1px solid #DCE1E9;
+    border-radius: 12px;
+    box-shadow: 0 12px 30px rgba(0, 0, 0, .15);
+    z-index: 99999;
+}
+
+.language-menu.open .language-dropdown {
+    display: block;
+}
+
+/* Opciones del menú */
+.language-dropdown button {
+    display: block;
+    width: 100%;
+    padding: 11px 12px;
+    border: none;
+    border-radius: 8px;
+    background: #fff;
+    color: #14161B;
+    text-align: left;
+    font-size: 14px;
+    cursor: pointer;
+    transition: color .2s ease, background .2s ease;
+}
+
+.language-dropdown button:hover {
+    background: #EAF0FF;
+    color: #1855D6;
+}
+
+
 
 /* Solo PC: el submenú de Contacto se abre hacia la izquierda */
 @media (min-width: 901px) {
@@ -418,6 +538,7 @@ details.has-sub[open] summary svg { transform: rotate(180deg); }
     z-index: 0;
     overflow: hidden;
     pointer-events: none;
+    background: #0b1f45
 }
 
 .hero-bg-slide {
@@ -428,6 +549,7 @@ details.has-sub[open] summary svg { transform: rotate(180deg); }
     background-repeat: no-repeat;
     opacity: 0;
     transition: opacity 900ms ease-in-out;
+    aspect-ratio: 16/9;
 }
 
 .hero-bg-slide.is-active { opacity: 1; }
@@ -1417,3 +1539,5 @@ nav.links.open {
 }
 
 .sponsors-track img:hover { opacity: 1; transform: scale(1.08); }
+
+
