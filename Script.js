@@ -54,46 +54,63 @@
   // SELECTOR DE IDIOMAS
   // =========================================
 
-  // Hacer que las funciones estén disponibles para el HTML
-  window.toggleLanguages = function (button) {
-    const menu = button.closest(".language-menu");
-    if (!menu) return;
+window.toggleLanguages = function (button) {
+  const menu = button.closest(".language-menu");
+  if (!menu) return;
 
-    const isOpen = menu.classList.toggle("open");
-    button.setAttribute("aria-expanded", String(isOpen));
-  };
+  const isOpen = menu.classList.toggle("open");
+  button.setAttribute("aria-expanded", String(isOpen));
+};
 
-  window.changeLanguage = function (language) {
-    const supportedLanguages = [
-      "pt", "fr", "tr", "es", "en", "zh-CN", "ar"
-    ];
+window.changeLanguage = function (language) {
+  const supportedLanguages = [
+    "pt", "fr", "tr", "es", "en", "zh-CN", "ar"
+  ];
 
-    if (!supportedLanguages.includes(language)) return;
+  if (!supportedLanguages.includes(language)) return;
 
-    const url =
-      "https://translate.google.com/translate?sl=auto&tl=" +
-      encodeURIComponent(language) +
-      "&u=" +
-      encodeURIComponent(window.location.href);
+  // Guardar la dirección original para poder cambiar de idioma
+  // sin acumular traducciones sobre traducciones.
+  let originalUrl = window.location.href;
 
-    window.location.href = url;
-  };
+  try {
+    const currentUrl = new URL(window.location.href);
+    const translatedUrl = currentUrl.searchParams.get("u");
 
+    if (
+      currentUrl.hostname.includes("translate.google.") &&
+      translatedUrl
+    ) {
+      originalUrl = translatedUrl;
+    }
+  } catch (error) {
+    originalUrl = window.location.href;
+  }
 
-  
+  const url =
+    "https://translate.google.com/translate?sl=auto&tl=" +
+    encodeURIComponent(language) +
+    "&u=" +
+    encodeURIComponent(originalUrl);
 
+  window.location.href = url;
+};
+
+// Cerrar el menú solo al hacer clic fuera de él.
 document.addEventListener("click", function (event) {
-    document.querySelectorAll(".language-menu.open").forEach(menu => {
-        if (!menu.contains(event.target)) {
-            menu.classList.remove("open");
+  document.querySelectorAll(".language-menu.open").forEach((menu) => {
+    if (!menu.contains(event.target)) {
+      menu.classList.remove("open");
 
-            const button = menu.querySelector(".language-button");
-            if (button) {
-                button.setAttribute("aria-expanded", "false");
-            }
-        }
-    });
+      const button = menu.querySelector(".language-button");
+
+      if (button) {
+        button.setAttribute("aria-expanded", "false");
+      }
+    }
+  });
 });
+```
 
 
 
